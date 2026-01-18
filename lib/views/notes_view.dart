@@ -22,11 +22,11 @@ class NotesView extends StatelessWidget {
         }
         ,child: Icon(Icons.add),),
       body: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             SizedBox(height: 50,),
-            CustomAppBar(),
+            CustomAppBar(title: "Notes",icon:Icons.search ,),
             Expanded(child: NotesListView()),
           ],
         ),
