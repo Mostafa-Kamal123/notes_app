@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:note_app/cubits/add_note_cubit/add_notes_cubit_cubit.dart';
+import 'package:note_app/views/widgets/add_form_bottom_sheet.dart';
 import 'package:note_app/views/widgets/custom_button.dart';
 import 'package:note_app/views/widgets/custom_text_field.dart';
 
@@ -10,47 +14,25 @@ class AddNoteBottomSheet extends StatefulWidget {
 }
 
 class _AddNoteBottomSheetState extends State<AddNoteBottomSheet> {
-final GlobalKey<FormState> formKey= GlobalKey();
-AutovalidateMode autovalidateMode=AutovalidateMode.disabled;
-String? title,subtitle;
-
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: SingleChildScrollView(
-        child: Form(
-          key: formKey,
-          child: Column(
-            children: [
-              SizedBox(height: 30,),
-              CustomTextField(hint: "title",
-              onsaved: (value) {
-                title=value;
-              },
-              ),
-              SizedBox(height: 20,),
-              CustomTextField(hint: "content",maxlines: 5,
-              onsaved: (value) {
-                title=value;
-              },
-              ),
-              SizedBox(height: 30,),
-              CustomButton(
-                onTap: () {
-                  if(formKey.currentState!.validate()){
-                    formKey.currentState!.save();
-                  }else{
-                    autovalidateMode=AutovalidateMode.always;
-                    setState(() {
-                      
-                    });
-                  }
-                },
-              )
-          
-            ],
-          ),
+        child: BlocConsumer<AddNotesCubitCubit, AddNotesCubitState>(
+          listener: (context, state) {
+            if(state is AddNotesCubitFailure){
+              print("failed");
+            }
+            if(state is AddNotesCubitSuccess){
+              Navigator.pop(context);
+            }
+          },
+          builder: (context, state) {
+            return ModalProgressHUD(
+              inAsyncCall: state is AddNotesCubitLoading? true :false,
+              child: AddFormBottomSheet());
+          },
         ),
       ),
     );
