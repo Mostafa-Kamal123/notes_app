@@ -30,10 +30,9 @@ class _AddNoteBottomSheetState extends State<AddNoteBottomSheet> {
             }
           },
           builder: (context, state) {
-            return ModalProgressHUD(
-              inAsyncCall: state is AddNotesCubitLoading ? true : false,
-              child: SingleChildScrollView(child: AddFormBottomSheet()),
-            );
+            return AbsorbPointer(
+              absorbing: state is AddNotesCubitLoading? true : false,
+              child: SingleChildScrollView(child: AddFormBottomSheet()));
           },
         ),
       ),
