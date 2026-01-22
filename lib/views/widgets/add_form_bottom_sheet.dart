@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:note_app/cubits/add_note_cubit/add_notes_cubit_cubit.dart';
+import 'package:note_app/models/note_model.dart';
 import 'package:note_app/views/widgets/custom_button.dart';
 import 'package:note_app/views/widgets/custom_text_field.dart';
 
@@ -31,7 +34,7 @@ String? title,subtitle;
               SizedBox(height: 20,),
               CustomTextField(hint: "content",maxlines: 5,
               onsaved: (value) {
-                title=value;
+                subtitle=value;
               },
               ),
               SizedBox(height: 30,),
@@ -39,6 +42,8 @@ String? title,subtitle;
                 onTap: () {
                   if(formKey.currentState!.validate()){
                     formKey.currentState!.save();
+                    var noteModel = NoteModel(title: title!, subtitle: subtitle!, date: DateTime.now().toString(), color: Colors.blue.value);
+                    BlocProvider.of<AddNotesCubitCubit>(context).addNote(noteModel);
                   }else{
                     autovalidateMode=AutovalidateMode.always;
                     setState(() {

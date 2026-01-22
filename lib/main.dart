@@ -9,8 +9,9 @@ import 'package:hive_flutter/hive_flutter.dart';
 void main() async{
   Bloc.observer=SimpleBlocObserver();
 await  Hive.initFlutter();
-  await Hive.openBox("notes_box");
-  Hive.registerAdapter(NoteModelAdapter());
+Hive.registerAdapter(NoteModelAdapter());
+  await Hive.openBox<NoteModel>("notes_box");
+  
   runApp(const NotesApp());
 }
 class NotesApp extends StatelessWidget {
